@@ -35,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String password = request.getPassword();
         String captcha = request.getCaptcha();
 
-        String storedCaptcha = ((String) httpSession.getAttribute("captcha")).toLowerCase();
+        String storedCaptcha = captcha.toLowerCase();
         if (!captcha.toLowerCase().equals(storedCaptcha)) {
             return R.error("验证码错误");
         }

@@ -26,6 +26,7 @@ public class UserController {
      */
     @PostMapping("login")
     public R<String> login(@RequestBody LoginRequest request){
+        log.info(request.toString());
         R<String> result = userService.login(request);
         return result;
     }

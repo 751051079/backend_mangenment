@@ -1,5 +1,6 @@
 package com.springboot.backend.controller;
 
+import com.springboot.backend.common.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class CaptchaController {
      * @param response
      * @throws IOException
      */
-    @GetMapping("/captcha")
+    @GetMapping("/getCaptcha")
     public void generateCaptcha(HttpServletResponse response) throws IOException {
         int width = 120;
         int height = 40;
