@@ -8,39 +8,37 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class Menu implements Serializable {
+public class SysMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private Long id;
 
     private Long menuId;
 
     private String menuName;
 
-    private String menuKey;
-
-    private String component;
-
     private Long parentId;
-
-    private String target;
 
     private int orderNum;
 
+    private String path;
+
+    private String component;
+
+    private String query;
+
+    private int isFrame;
+
+    private int isCache;
+
     private char menuType;
 
-    private int visible;
+    private char visible;
+
+    private char status;
 
     private String perms;
 
-    private String path;
-
-    private String redirect;
-
-    private int hiddenChildren;
-
-    private int hiddenHeader;
+    private String icon;
 
     private String createBy;
 

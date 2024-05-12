@@ -3,8 +3,8 @@ package com.springboot.backend.controller;
 
 import com.springboot.backend.common.R;
 import com.springboot.backend.dto.LoginRequest;
-import com.springboot.backend.entity.User;
-import com.springboot.backend.service.UserService;
+import com.springboot.backend.entity.SysUser;
+import com.springboot.backend.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class SysUserController {
 
     @Autowired
-    private UserService userService;
+    private SysUserService userService;
 
     /**
      * 用户登录
@@ -38,7 +38,7 @@ public class UserController {
      * @return
      */
     @PostMapping("create")
-    public R<String> createUser(HttpServletRequest request,@RequestBody User user) {
+    public R<String> createUser(HttpServletRequest request,@RequestBody SysUser user) {
         R<String> result = userService.createUser(user);
         return result;
     }

@@ -2,13 +2,12 @@ package com.springboot.backend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.databind.DatabindContext;
 import com.springboot.backend.common.R;
 import com.springboot.backend.config.JwtTokenProvider;
 import com.springboot.backend.dto.LoginRequest;
-import com.springboot.backend.entity.User;
-import com.springboot.backend.mapper.UserMapper;
-import com.springboot.backend.service.UserService;
+import com.springboot.backend.entity.SysUser;
+import com.springboot.backend.mapper.SysUserMapper;
+import com.springboot.backend.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Autowired
     private HttpSession httpSession;
@@ -44,9 +43,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         password = DigestUtils.md5DigestAsHex(password.getBytes());
 
         //2、根据页面提交的用户名username查询数据库
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername,username);
-        User user1 = getOne(queryWrapper);
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getUsername,username);
+        SysUser user1 = getOne(queryWrapper);
 
         //3、如果没有查询到则返回登录失败结果
         if(user1 == null){
@@ -70,7 +69,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R<String> createUser(@RequestBody User user) {
+    public R<String> createUser(@RequestBody SysUser user) {
         log.info(user.toString());
         if(user.getUsername() == null){
             R.error("没有输入用户名！");
@@ -80,11 +79,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             R.error("没有输入密码！");
         }
 
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
 
-        queryWrapper.eq(User::getUsername,user.getUsername());
+        queryWrapper.eq(SysUser::getUsername,user.getUsername());
 
-        User user1 = getOne(queryWrapper);
+        SysUser user1 = getOne(queryWrapper);
 
         if(user1!=null){
             return R.error("账号已存在，请重试！");
