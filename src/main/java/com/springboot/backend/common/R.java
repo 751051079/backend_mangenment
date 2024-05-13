@@ -38,6 +38,7 @@ public class R<T> {
         R<T> r = new R<T>();
         r.data = object;
         r.code = 1;
+        r.msg = (String) object;
         return r;
     }
 

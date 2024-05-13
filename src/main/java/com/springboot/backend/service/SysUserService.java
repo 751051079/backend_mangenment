@@ -6,9 +6,11 @@ import com.springboot.backend.dto.LoginRequest;
 import com.springboot.backend.entity.SysUser;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.http.HttpSession;
+
 public interface SysUserService extends IService<SysUser> {
 
-    public R<String> login(@RequestBody LoginRequest request);
+    public R<String> login(@RequestBody LoginRequest request, HttpSession session);
 
     public R<String> createUser(@RequestBody SysUser user);
 }

@@ -61,8 +61,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         lambdaQueryWrapper.eq(SysMenu::getMenuName,sysMenu.getMenuName());
 
         // 添加不等于条件，排除相同 menuId 的记录
-        if (sysMenu.getMenuId() != null) {
-            lambdaQueryWrapper.ne(SysMenu::getMenuId, sysMenu.getMenuId());
+        if (sysMenu.getId() != null) {
+            lambdaQueryWrapper.ne(SysMenu::getId, sysMenu.getId());
         }
 
         // 执行查询

@@ -28,33 +28,29 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R<String> login(@RequestBody LoginRequest request) {
+    public R<String> login(@RequestBody LoginRequest request,HttpSession session) {
 
         String username = request.getUsername();
         String password = request.getPassword();
         String captcha = request.getCaptcha();
-
         String storedCaptcha = captcha.toLowerCase();
-        if (!captcha.toLowerCase().equals(storedCaptcha)) {
-            return R.error("验证码错误");
-        }
 
         //1、将页面提交的密码password进行md5加密处理
         password = DigestUtils.md5DigestAsHex(password.getBytes());
 
         //2、根据页面提交的用户名username查询数据库
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysUser::getUsername,username);
+        queryWrapper.eq(SysUser::getUserName,username);
         SysUser user1 = getOne(queryWrapper);
 
         //3、如果没有查询到则返回登录失败结果
         if(user1 == null){
-            return R.error("登录失败");
+            return R.error("没有找到该账号");
         }
 
         //4、密码比对，如果不一致则返回登录失败结果
         if(!user1.getPassword().equals(password)){
-            return R.error("登录失败");
+            return R.error("密码错误，请重新输入密码");
         }
 
         //5、查看用户状态，如果为已禁用状态，则返回员工已禁用结果
@@ -62,6 +58,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return R.error("账号已禁用");
         }
 
+        if (!captcha.toLowerCase().equals(storedCaptcha)) {
+            return R.error("验证码错误");
+        }
+
+        session.setAttribute("user",user1.getId());
         // 返回 Token
         String token = jwtTokenProvider.generateToken(username,password,captcha);
         return R.success(token);
@@ -71,7 +72,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     public R<String> createUser(@RequestBody SysUser user) {
         log.info(user.toString());
-        if(user.getUsername() == null){
+        if(user.getUserName() == null){
             R.error("没有输入用户名！");
         }
 
@@ -81,7 +82,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
 
-        queryWrapper.eq(SysUser::getUsername,user.getUsername());
+        queryWrapper.eq(SysUser::getUserName,user.getUserName());
 
         SysUser user1 = getOne(queryWrapper);
 

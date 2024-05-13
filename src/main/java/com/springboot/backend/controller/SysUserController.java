@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @RestController
@@ -19,15 +20,17 @@ public class SysUserController {
     @Autowired
     private SysUserService userService;
 
+
     /**
      * 用户登录
      * @param request
+     * @param session
      * @return
      */
     @PostMapping("login")
-    public R<String> login(@RequestBody LoginRequest request){
+    public R<String> login(@RequestBody LoginRequest request, HttpSession session){
         log.info(request.toString());
-        R<String> result = userService.login(request);
+        R<String> result = userService.login(request,session);
         return result;
     }
 

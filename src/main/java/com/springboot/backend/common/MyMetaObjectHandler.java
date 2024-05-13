@@ -21,8 +21,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         log.info(metaObject.toString());
         metaObject.setValue("createTime", LocalDateTime.now());
         metaObject.setValue("updateTime", LocalDateTime.now());
-//        metaObject.setValue("createUser", BaseContext.getCurrentId());     // 从 ThreadLocal 中获取当前用户的 id
-//        metaObject.setValue("updateUser", BaseContext.getCurrentId());     // 从 ThreadLocal 中获取当前用户的 id
+        metaObject.setValue("createBy", BaseContext.getCurrentId());     // 从 ThreadLocal 中获取当前用户的 id
+        metaObject.setValue("updateBy", BaseContext.getCurrentId());     // 从 ThreadLocal 中获取当前用户的 id
     }
 
 
@@ -39,7 +39,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 //        long id = Thread.currentThread().getId(); // 获取当前线程的id
 //        log.info("当前线程id={}", id);                                        // Slf4j的日志输出
 //
-//        metaObject.setValue("updateTime", LocalDateTime.now());
-//        metaObject.setValue("updateUser", BaseContext.getCurrentId());
+        metaObject.setValue("updateTime", LocalDateTime.now());
+        metaObject.setValue("updateBy", BaseContext.getCurrentId());
     }
 }
