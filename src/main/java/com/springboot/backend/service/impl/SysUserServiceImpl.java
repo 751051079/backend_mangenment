@@ -21,9 +21,6 @@ import javax.servlet.http.HttpSession;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Autowired
-    private HttpSession httpSession;
-
-    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -54,7 +51,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         //5、查看用户状态，如果为已禁用状态，则返回员工已禁用结果
-        if(user1.getStatus() == 0){
+        if(user1.getStatus() != '0'){
             return R.error("账号已禁用");
         }
 
@@ -62,10 +59,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return R.error("验证码错误");
         }
 
-        session.setAttribute("user",user1.getId());
+        session.setAttribute("sysUser",user1.getId());
+
         // 返回 Token
-        String token = jwtTokenProvider.generateToken(username,password,captcha);
-        return R.success(token);
+        String token = jwtTokenProvider.generateToken(username,user1.getId());
+        return R.success(token,"登陆成功");
     }
 
     @Override
@@ -96,6 +94,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         save(user);
 
-        return R.success("创建账号成功！");
+        return R.success("创建账号成功！","成功");
     }
 }

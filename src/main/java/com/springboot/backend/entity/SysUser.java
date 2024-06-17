@@ -70,7 +70,7 @@ public class SysUser implements Serializable {
 
     /** 更新者 */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private char updateBy;
+    private String updateBy;
 
     /** 更新时间 */
     @TableField(fill = FieldFill.INSERT_UPDATE) //插入和更新时填充字段

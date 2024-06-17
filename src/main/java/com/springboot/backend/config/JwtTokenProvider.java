@@ -16,22 +16,40 @@ public class JwtTokenProvider {
 
     private int jwtExpiration = 86400;
 
-    public String generateToken(String username, String password, String captcha) {
-        String str = username+password+captcha;
-        // 生成 Token
-        Claims claims = Jwts.claims().setSubject(str);
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpiration * 1000);
+    public String generateToken(String username, Long userId) {
 
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
+                .setSubject(username)
+                .claim("userId", userId)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
-    public Claims validateToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token).getBody();
+    // 从 JWT 令牌中获取用户名
+    public String getUsernameFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.getSubject();
     }
+
+    // 验证 JWT 令牌
+    public boolean validateToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return !claims.getExpiration().before(new Date());
+    }
+
+    public Long getUserIdFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.get("userId", Long.class);
+    }
+
+    // 从 JWT 令牌中获取声明
+    private Claims getClaimsFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
 }

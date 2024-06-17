@@ -10,7 +10,7 @@ public class BaseContext {
         threadLocal.set(id);
     }
 
-    public static long getCurrentId() {
+    public static Long getCurrentId() {
         return threadLocal.get();
     }
 }

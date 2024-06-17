@@ -34,11 +34,11 @@ public class R<T> {
      * @param <T>
      * @return 返回该类的泛型的结果R对象，包含有成功代码和数据
      */
-    public static <T> R<T> success(T object) {
+    public static <T> R<T> success(T object, String msg) {
         R<T> r = new R<T>();
         r.data = object;
-        r.code = 1;
-        r.msg = (String) object;
+        r.code = 200;
+        r.msg = msg;
         return r;
     }
 
@@ -52,7 +52,7 @@ public class R<T> {
     public static <T> R<T> error(String msg) {
         R r = new R();
         r.msg = msg;
-        r.code = 0;
+        r.code = 500;
         return r;
     }
 

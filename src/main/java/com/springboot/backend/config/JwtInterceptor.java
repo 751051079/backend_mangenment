@@ -32,7 +32,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = extractTokenFromHeader(request);
         if (token != null) {
             try {
-                Claims claims = jwtTokenProvider.validateToken(token);
+                boolean claims = jwtTokenProvider.validateToken(token);
                 // Token 验证通过，可以允许请求继续进行
                 return true;
             } catch (ExpiredJwtException ex) {
