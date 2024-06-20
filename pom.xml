@@ -114,6 +114,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version> <!-- 版本号根据实际需要选择 -->
+            <scope>provided</scope> <!-- 如果Servlet容器提供了Servlet API，可以使用provided作用域 -->
+        </dependency>
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>0.11.2</version>

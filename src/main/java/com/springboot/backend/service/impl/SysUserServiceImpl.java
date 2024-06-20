@@ -3,7 +3,6 @@ package com.springboot.backend.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.springboot.backend.common.R;
-import com.springboot.backend.config.JwtTokenProvider;
 import com.springboot.backend.dto.LoginRequest;
 import com.springboot.backend.entity.SysUser;
 import com.springboot.backend.mapper.SysUserMapper;
@@ -15,22 +14,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Slf4j
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private HttpSession httpSession;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R<String> login(@RequestBody LoginRequest request,HttpSession session) {
+    public R<SysUser> login(@RequestBody LoginRequest request, HttpSession session) {
 
         String username = request.getUsername();
         String password = request.getPassword();
         String captcha = request.getCaptcha();
-        String storedCaptcha = captcha.toLowerCase();
 
         //1、将页面提交的密码password进行md5加密处理
         password = DigestUtils.md5DigestAsHex(password.getBytes());
@@ -54,16 +53,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if(user1.getStatus() != '0'){
             return R.error("账号已禁用");
         }
-
-        if (!captcha.toLowerCase().equals(storedCaptcha)) {
+        String sessionCaptcha = (String) session.getAttribute("captcha");
+        if (!Objects.equals(sessionCaptcha.toLowerCase(), captcha.toLowerCase())) {
             return R.error("验证码错误");
         }
 
-        session.setAttribute("sysUser",user1.getId());
+        httpSession.setAttribute("user",user1.getId());
 
-        // 返回 Token
-        String token = jwtTokenProvider.generateToken(username,user1.getId());
-        return R.success(token,"登陆成功");
+        return R.success(user1,"登陆成功");
     }
 
     @Override

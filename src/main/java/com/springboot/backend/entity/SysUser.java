@@ -62,7 +62,7 @@ public class SysUser implements Serializable {
 
     /** 创建者 */
     @TableField(fill = FieldFill.INSERT)
-    private String createBy;
+    private Long createBy;
 
     /** 账号创建时间 */
     @TableField(fill = FieldFill.INSERT) //插入时填充字段
@@ -70,7 +70,7 @@ public class SysUser implements Serializable {
 
     /** 更新者 */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
+    private Long updateBy;
 
     /** 更新时间 */
     @TableField(fill = FieldFill.INSERT_UPDATE) //插入和更新时填充字段

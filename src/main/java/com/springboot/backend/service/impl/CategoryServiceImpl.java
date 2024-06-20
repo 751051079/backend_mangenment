@@ -5,13 +5,16 @@ import com.springboot.backend.common.R;
 import com.springboot.backend.entity.Category;
 import com.springboot.backend.mapper.CategoryMapper;
 import com.springboot.backend.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -20,8 +23,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         return R.success(category,"添加成功！");
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public R<Category> getCategoryById(Long id) {
         Category category = getById(id);
         return R.success(category,"查询成功！");

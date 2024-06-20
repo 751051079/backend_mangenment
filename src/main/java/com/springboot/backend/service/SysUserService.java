@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 public interface SysUserService extends IService<SysUser> {
 
-    public R<String> login(@RequestBody LoginRequest request, HttpSession session);
+    public R<SysUser> login(@RequestBody LoginRequest request,HttpSession session);
 
     public R<String> createUser(@RequestBody SysUser user);
 }

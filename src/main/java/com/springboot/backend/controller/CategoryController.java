@@ -11,9 +11,9 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/categories")
 public class CategoryController {
+
 
     @Autowired
     private CategoryService categoryService;
@@ -37,13 +37,13 @@ public class CategoryController {
     }
 
     // 更新分类信息
-    @PutMapping("/{id}")
+    @PostMapping("/update/{id}")
     public R<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
         return categoryService.updateCategoryById(id,category);
     }
 
     // 删除分类
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public R<String> deleteCategory(@PathVariable Long id) {
         return categoryService.removeCategoryById(id);
     }

@@ -20,17 +20,15 @@ public class SysUserController {
     @Autowired
     private SysUserService userService;
 
-
     /**
      * 用户登录
      * @param request
-     * @param session
      * @return
      */
     @PostMapping("login")
-    public R<String> login(@RequestBody LoginRequest request, HttpSession session){
+    public R<SysUser> login(@RequestBody LoginRequest request, HttpSession session){
         log.info(request.toString());
-        R<String> result = userService.login(request,session);
+        R<SysUser> result = userService.login(request,session);
         return result;
     }
 
